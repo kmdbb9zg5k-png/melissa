@@ -10,6 +10,10 @@ interface Props {
 }
 
 export default function SelectedDrawer({ isOpen, onClose, activities, onRemove }: Props) {
+const sendPicks = async () => { if (activities.length === 0) return; const picks = activities .map((activity, index) => `${index + 1}. ${activity.title}`) .join("\n"); try { const response = await fetch("https://formspree.io/f/mwlebwjk", { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json", }, body: JSON.stringify({ subject: "New Saturday Night Picks", picks, }), }); if (response.ok) { alert("Your picks were sent!"); } else { alert("Something went wrong. Please try again."); } } catch (error) { alert("Could not send your picks. Please try again."); } };
+
+
+                                                                                          
   return (
     <AnimatePresence>
       {isOpen && (
@@ -119,11 +123,13 @@ export default function SelectedDrawer({ isOpen, onClose, activities, onRemove }
               )}
             </div>
 
-            {/* Footer */}
+            {/* https://formspree.io/f/mwlebwjk */}
             {activities.length > 0 && (
               <div className="px-6 py-5 border-t border-white/[0.06]">
                 <motion.button
-                  className="w-full inline-flex items-center justify-center gap-2 py-4 rounded-xl text-base font-inter font-medium bg-gradient-to-r from-pink-500 to-purple-600 shadow-xl shadow-pink-500/20 hover:shadow-pink-500/30 transition-shadow duration-500"
+                  onClick={sendPicks}
+
+                 className="w-full inline-flex items-center justify-center gap-2 py-4 rounded-xl text-base font-inter font-medium bg-gradient-to-r from-pink-500 to-purple-600 shadow-xl shadow-pink-500/20 hover:shadow-pink-500/30 transition-shadow duration-500"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
